@@ -23,10 +23,17 @@ window.Vue = require('vue');
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('list-task-component', require('./components/ListTaskComponent.vue').default);
-Vue.component('task-component', require('./components/TaskComponent.vue').default);
+//Vue.component('task-component', require('./components/TaskComponent.vue').default);
 Vue.component('task-form-component', require('./components/TaskFormComponent.vue').default);
 Vue.component('modal-editar-component', require('./components/Modal/ModalEditarComponent.vue').default);
 Vue.component('modal-eliminar-component', require('./components/Modal/ModalEliminarComponent.vue').default);
+
+Vue.component('edit-task-component',require('./components/Task/Forms/EditTaskComponent').default);
+
+
+
+
+Vue.component('task-component',require('./components/Task/TaskComponent.vue').default);
 
 
 import Vuelidate from 'vuelidate';
