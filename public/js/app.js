@@ -2257,6 +2257,20 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ["tareas"],
   data: function data() {
@@ -2279,33 +2293,38 @@ __webpack_require__.r(__webpack_exports__);
     updateTask: function updateTask() {
       var _this = this;
 
-      if (!this.titulo && !this.descripcion) {
-        this.errors = {
-          titulo: ["El titulo es requerido"],
-          descripcion: ["La descripcion es requerida"]
-        };
-      }
-
-      if (this.titulo && this.descripcion) {
+      if (this.tarea.titulo && this.tarea.descripcion) {
         this.error = {};
         var params = {
-          "id": this.id,
-          "titulo": this.titulo,
-          "descripcion": this.descripcion
+          "id": this.tarea.id,
+          "titulo": this.tarea.titulo,
+          "descripcion": this.tarea.descripcion
         };
-        axios.post('/task/edit', params).then(function (response) {
+        axios.put('/task/update', params).then(function (response) {
           _this.$emit('refreshArray');
 
-          _this.id = "";
-          _this.titulo = "";
-          _this.descripcion = "";
-          _this.errors = [];
+          $('#ediModal').modal('toggle');
         })["catch"](function (error) {
           _this.errors = error.response.data.errors;
         });
       }
     },
+    deleteTask: function deleteTask() {
+      var _this2 = this;
+
+      var id = this.tarea.id;
+      axios["delete"]('/task/' + id).then(function (success) {
+        console.log(success);
+
+        _this2.$emit('refreshArray');
+
+        $('#delModal').modal('toggle'); // cerramos el modal
+      })["catch"](function (error) {
+        _this2.errors = error.response.data.errors;
+      });
+    },
     refreshArray: function refreshArray() {
+      // Evento para decirle al padre que refresque el arreglo de tareas
       this.$emit('refreshArray');
     }
   }
@@ -39245,6 +39264,22 @@ var render = function() {
                   })
                 ]),
                 _vm._v(" "),
+                _vm.errors.titulo
+                  ? _c(
+                      "div",
+                      _vm._l(_vm.errors.titulo, function(errors) {
+                        return _c("span", { staticClass: "text-danger" }, [
+                          _vm._v(
+                            "\n                            " +
+                              _vm._s(errors) +
+                              "\n                        "
+                          )
+                        ])
+                      }),
+                      0
+                    )
+                  : _vm._e(),
+                _vm._v(" "),
                 _c("div", [
                   _c("label", { attrs: { for: "descripcion" } }, [
                     _vm._v("Descripcion de la tarea")
@@ -39271,10 +39306,53 @@ var render = function() {
                       }
                     }
                   })
-                ])
+                ]),
+                _vm._v(" "),
+                _vm.errors.descripcion
+                  ? _c(
+                      "div",
+                      _vm._l(_vm.errors.descripcion, function(errors) {
+                        return _c("span", { staticClass: "text-danger" }, [
+                          _vm._v(
+                            "\n                            " +
+                              _vm._s(errors) +
+                              "\n                        "
+                          )
+                        ])
+                      }),
+                      0
+                    )
+                  : _vm._e()
               ]),
               _vm._v(" "),
-              _vm._m(2)
+              _c("div", { staticClass: "modal-footer" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-secondary",
+                    attrs: { type: "button", "data-dismiss": "modal" }
+                  },
+                  [_vm._v("Close")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-primary",
+                    attrs: { type: "button" },
+                    on: {
+                      click: function($event) {
+                        return _vm.updateTask()
+                      }
+                    }
+                  },
+                  [
+                    _vm._v(
+                      "\n                        Guardar cambios\n                    "
+                    )
+                  ]
+                )
+              ])
             ])
           ]
         )
@@ -39310,20 +39388,47 @@ var render = function() {
                     attrs: { id: "exampleModalLongTitle" }
                   },
                   [
-                    _vm._v(
-                      "¿Está seguro de eliminar " + _vm._s(_vm.tarea.titulo)
-                    )
+                    _vm._v("¿Está seguro de eliminar "),
+                    _c("b", [_vm._v(_vm._s(_vm.tarea.titulo))]),
+                    _vm._v(" ?")
                   ]
                 ),
                 _vm._v(" "),
-                _vm._m(3)
+                _vm._m(2)
               ]),
               _vm._v(" "),
               _c("div", { staticClass: "modal-body" }, [
-                _vm._v("\n                    ...\n                ")
+                _vm._v(
+                  "\n                    " +
+                    _vm._s(_vm.tarea.descripcion) +
+                    "\n                "
+                )
               ]),
               _vm._v(" "),
-              _vm._m(4)
+              _c("div", { staticClass: "modal-footer" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-secondary",
+                    attrs: { type: "button", "data-dismiss": "modal" }
+                  },
+                  [_vm._v("No")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-primary",
+                    attrs: { type: "button" },
+                    on: {
+                      click: function($event) {
+                        return _vm.deleteTask()
+                      }
+                    }
+                  },
+                  [_vm._v("Absolutamente")]
+                )
+              ])
             ])
           ]
         )
@@ -39379,31 +39484,6 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "modal-footer" }, [
-      _c(
-        "button",
-        {
-          staticClass: "btn btn-secondary",
-          attrs: { type: "button", "data-dismiss": "modal" }
-        },
-        [_vm._v("Close")]
-      ),
-      _vm._v(" "),
-      _c(
-        "button",
-        { staticClass: "btn btn-primary", attrs: { type: "button" } },
-        [
-          _vm._v(
-            "\n                        Guardar cambios\n                    "
-          )
-        ]
-      )
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
     return _c(
       "button",
       {
@@ -39416,27 +39496,6 @@ var staticRenderFns = [
       },
       [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
     )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "modal-footer" }, [
-      _c(
-        "button",
-        {
-          staticClass: "btn btn-secondary",
-          attrs: { type: "button", "data-dismiss": "modal" }
-        },
-        [_vm._v("Close")]
-      ),
-      _vm._v(" "),
-      _c(
-        "button",
-        { staticClass: "btn btn-primary", attrs: { type: "button" } },
-        [_vm._v("Save changes")]
-      )
-    ])
   }
 ]
 render._withStripped = true

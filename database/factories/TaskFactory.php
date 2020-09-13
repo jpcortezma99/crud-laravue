@@ -7,6 +7,7 @@ use Faker\Generator as Faker;
 
 $factory->define(Task::class, function (Faker $faker) {
     return [
-        //
+        'titulo' => $faker->name,
+        'descripcion' => $faker->text
     ];
 });
