@@ -28,7 +28,8 @@ Vue.component('task-form-component', require('./components/TaskFormComponent.vue
 Vue.component('modal-editar-component', require('./components/Modal/ModalEditarComponent.vue').default);
 Vue.component('modal-eliminar-component', require('./components/Modal/ModalEliminarComponent.vue').default);
 
-Vue.component('edit-task-component',require('./components/Task/Forms/EditTaskComponent').default);
+Vue.component('edit-task-form-component',require('./components/Task/Forms/EditTaskComponent').default);
+Vue.component('delete-task-form-component',require('./components/Task/Forms/DelTaskComponent').default);
 
 
 

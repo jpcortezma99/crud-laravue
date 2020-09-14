@@ -1,6 +1,6 @@
 <template>
     <div>                
-        <div class="modal-body">
+        
             <div>
                 <label>Titulo</label>            
                 <input type="text" class="form-control" v-model="tarea_editar.titulo">                
@@ -14,8 +14,7 @@
                     <p class="text-danger" v-if="!$v.titulo.required">El titulo es requerido</p>
                     <p class="text-danger" v-if="!$v.titulo.maxLength">Maximo 20 caracteres</p>                                        
                 </div>
-
-                <p class="text-right" v-if="tarea_editar.titulo.length > 0">Caracteres {{ tarea_editar.titulo.length}}</p>
+               
             </div>
 
             <div>
@@ -30,10 +29,10 @@
                     <p class="text-danger" v-if="!$v.descripcion.required">La descripcion es requerida</p>
                     <p class="text-danger" v-if="!$v.descripcion.maxLength">Maximo 20 caracteres</p>
                 </div>
-                <p class="text-right" v-if="tarea_editar.descripcion.length > 0">Caracteres {{ tarea_editar.descripcion.length}}</p>
+                
+                              
             </div>          
-
-        </div>
+        
        
     </div>
 </template>
@@ -42,10 +41,10 @@
     import { required,maxLength } from 'vuelidate/lib/validators'
 
     export default {   
-        props: ["tarea_editar","errors"],  
+        props: ["tarea_editar"],  
             
         updated(){
-            
+
             this.id     = this.tarea_editar.id;
             this.titulo = this.tarea_editar.titulo;
             this.descripcion = this.tarea_editar.descripcion;
@@ -56,7 +55,8 @@
             return {
                 id: 0,
                 titulo: '',
-                descripcion: '',                                
+                descripcion: '', 
+                errors: []
             }
         },  
         

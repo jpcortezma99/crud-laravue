@@ -5,7 +5,7 @@
                 <label>Titulo</label>            
                 <input type="text" class="form-control" v-model="titulo">                
                 <div v-if="errors.titulo">
-                    <span class="text-danger" v-for="errors in errors.titulo">
+                    <span class="text-danger" v-for="(errors,index) in errors.titulo" :key="index">
                         {{ errors }}
                     </span>                
                 </div>                
@@ -20,7 +20,7 @@
                 <label>Descripcion</label>            
                 <input type="text" class="form-control" v-model="descripcion">
                 <div v-if="errors.descripcion">
-                    <span class="text-danger" v-for="errors in errors.descripcion">
+                    <span class="text-danger" v-for="(errors,index) in errors.descripcion" :key="index">
                         {{ errors }}
                     </span>
                 </div>

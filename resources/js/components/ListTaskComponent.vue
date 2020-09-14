@@ -29,17 +29,26 @@
                             v-for="tarea in tareas"
                             v-bind:tarea="tarea"
                             v-bind:key="tarea.id"
-                            @editModalFromTaskComponent="setEditModal"
-                            @delModalFromTaskComponent="setDelModal"
+                            @editModalFromTaskComponent="setModal"
+                            @delModalFromTaskComponent="setModal"
                         ></task-component>                         
                     </tbody>
                 </table>
             </div>
         </div>
 
+        <modal-editar-component
+            v-bind:tarea_editar="modal_tarea"
+            @refreshArray="refreshArray"
+        >
+        </modal-editar-component>            
 
+        <modal-eliminar-component
+            v-bind:modal_tarea="modal_tarea"  
+            @refreshArray="refreshArray"
+        ></modal-eliminar-component>
 
-        <!-- MODAL EDITAR -->
+        <!-- MODAL EDITAR 
         <div class="modal fade" id="ediModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
@@ -51,10 +60,10 @@
                     </div>
                     <div class="modal-body">
 
-                        <edit-task-component
+                        <edit-task-form-component
                             v-bind:tarea_editar="modal_tarea"
                             v-bind:errors="errors"
-                        ></edit-task-component>                                         
+                        ></edit-task-form-component>                                         
                        
                     </div>
                     <div class="modal-footer">
@@ -66,30 +75,42 @@
                 </div>             
             </div>
         </div> 
-        <!-- FIN MODAL EDITAR -->               
+         FIN MODAL EDITAR -->   
+        
+        
 
-
-        <!-- MODAL ELIMIANR -->
+        <!-- MODAL Eliminar
         <div class="modal fade" id="delModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
+
+
                 <div class="modal-content">
+
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLongTitle">¿Está seguro de eliminar <b>{{ modal_tarea.titulo }}</b> ?</h5>
+                        <h3>¿Esta seguro de eliminar <b>{{ modal_tarea.titulo.toUpperCase() }}</b> ?</h3> 
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                         </button>
-                    </div>
-                    <div class="modal-body">
-                        {{ modal_tarea.descripcion }}
-                    </div>
+                    </div>       
+
+                    <delete-task-form-component
+                        v-bind:tarea_editar="modal_tarea"
+                    ></delete-task-form-component>
+
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
-                        <button type="button" class="btn btn-primary">Absolutamente</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" @click="delTask()">
+                            Si,absolutamente!
+                        </button>
                     </div>  
-                </div>              
+
+                </div>   
+
             </div>
         </div> 
-        <!-- FIN MODAL ELIMINAR --> 
+        IN MODAL ELIMINAR-->
+
+
 
 
     </div>
@@ -104,14 +125,12 @@
         },
         data() {
             return {
-                tareas:[],                
-                errors: [],         //contiene los errores de validacion al efectuar un edit o delete
+                tareas:[],                                
                 modal_tarea: {
                     id: 0,
                     titulo:'',
                     descripcion:''
-                },    //   
-                cuidandoMultiplesPeticiones: ''                         
+                }                         
             }
         },
         methods:{
@@ -131,54 +150,11 @@
                 });                
             },
 
-            setEditModal($event){
+            setModal($event){
                 //event representa el row seleccionado
                 this.modal_tarea = $event;
             },
-
-            setDelModal($event){
-                //event representa el row seleccionado
-                this.modal_tarea = $event;
-            },
-
-            editarTarea(){                                                                                                     
-
-                let params = {
-                    "id": this.modal_tarea.id,
-                    "titulo":this.modal_tarea.titulo,
-                    "descripcion":this.modal_tarea.descripcion                    
-                };
-
-
-                let self = this;
-                
-                clearTimeout(this.cuidandoMultiplesPeticiones);
-
-                this.cuidandoMultiplesPeticiones = setTimeout(function(){
-                    
-                    axios.put('/task/update',params)
-                    .then( (success) => {                    
-    
-                        self.errors = [];
-                        self.refreshArray();
-    
-                    } )
-                    .catch( (error) => {                    
-                        
-                        self.errors = error.response.data.errors;                                        
-    
-                    } )
-                    .then( function(){                            
-                        console.log("enviado we");
-                    });
-                },1000);
-                
-
-                            
-            } 
-
-
-
+         
         }
 
     }
