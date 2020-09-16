@@ -8,6 +8,10 @@
                     </div>           
 
                     <div class="modal-body">
+                      
+                      <div v-if="editadoCorrectamente" class="alert alert-success">
+                        <small>¡Editado correctamente!</small>
+                      </div>
 
                       <div v-if="errors" class="alert alert-danger">
                         <div v-for="(v, k) in errors" :key="k">
@@ -27,7 +31,7 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal" 
                           @click="limpiarErrores()"
-                          v-bind:disabled="guardandoCambios">Close
+                          v-bind:disabled="guardandoCambios">Cerrar
 
                         </button>
 
@@ -61,13 +65,23 @@
         return{
           cuidandoMultiplesPeticiones: '',
           errors: null,          
-          guardandoCambios: false
+          guardandoCambios: false,
+          editadoCorrectamente: false
         }
       },
 
       methods: {
+        limpiarErrores(){
+
+            this.cuidandoMultiplesPeticiones = '';
+            this.errors = null;
+            this.guardandoCambios = false;
+            this.editadoCorrectamente = false          
+            
+        },
+
         editarTarea(){     
-          
+                    
           let params = {
             "id": this.tarea_editar.id,
             "titulo":this.tarea_editar.titulo,
@@ -76,8 +90,8 @@
 
           let self = this;
           self.errors = null; 
-
           self.guardandoCambios    = true;
+          self.editadoCorrectamente = false;
 
           clearTimeout(this.cuidandoMultiplesPeticiones);
 
@@ -87,6 +101,7 @@
                 .then( (success) => {                    
         
                   self.errors = null;  
+                  self.editadoCorrectamente = true;
                   self.$emit('refreshArray');                  
         
                 })

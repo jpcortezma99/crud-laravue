@@ -1,68 +1,109 @@
 <template>
     <div>                
-        <div>
-            <div>
-                <label>Titulo</label>            
-                <input type="text" class="form-control" v-model="titulo">                
-                <div v-if="errors.titulo">
-                    <span class="text-danger" v-for="(errors,index) in errors.titulo" :key="index">
-                        {{ errors }}
-                    </span>                
-                </div>                
-                <div v-else> 
-                                       
-                    <p class="text-danger" v-if="!$v.titulo.required">El titulo es requerido</p>
-                    <p class="text-danger" v-if="!$v.titulo.maxLength">Maximo 20 caracteres</p>                                        
+        <div class="modal-body">
 
+            <div v-if="agregadoExitosamente" class="alert alert-success">
+                <small>¡Agregado Exitosamente!</small>
+            </div>
+
+            <div v-if="errors" class="alert alert-danger">
+                <div v-for="(v, k) in errors" :key="k">
+                    <small v-for="error in v" :key="error" class="text-sm">
+                        {{ error }}
+                    </small>
                 </div>
+            </div>            
+
+
+            <div>
+                <label>Titulo</label>                       
+                <input type="text" class="form-control" v-model.trim="$v.titulo.$model" v-bind:class="{ 
+                    'is-invalid': $v.titulo.$error,
+                    'is-valid'  : !$v.titulo.$invalid }"> 
+
+                <div class="valid-feedback">El titulo es valida!</div>                                                      
+                <div class="invalid-feedback">                                        
+                    <span class="text-danger" v-if="!$v.titulo.required">El titulo es requerido</span>
+                    <span class="text-danger" v-if="!$v.titulo.minLength">Se requiere un minimo de 3 caracteres</span>
+                    <span class="text-danger" v-if="!$v.titulo.maxLength">Maximo 20 caracteres</span>
+                </div>                
             </div>
             <div>
-                <label>Descripcion</label>            
-                <input type="text" class="form-control" v-model="descripcion">
-                <div v-if="errors.descripcion">
-                    <span class="text-danger" v-for="(errors,index) in errors.descripcion" :key="index">
-                        {{ errors }}
-                    </span>
-                </div>
-                <div v-else>
+                <label>Descripcion</label>                            
+                <input type="text" class="form-control" v-model="$v.descripcion.$model" v-bind:class="{ 
+                    'is-invalid': $v.descripcion.$error,   
+                    'is-valid'  : !$v.descripcion.$invalid}">                                
+                <div class="valid-feedback">La descripcion es valida!</div>
+                <div class="invalid-feedback">
                     <p class="text-danger" v-if="!$v.descripcion.required">La descripcion es requerida</p>
-                    <p class="text-danger" v-if="!$v.descripcion.maxLength">Maximo 20 caracteres</p>
-                </div>
+                    <p class="text-danger" v-if="!$v.descripcion.minLength">Se requiere un minimo de 3 caracteres</p>
+                    <p class="text-danger" v-if="!$v.descripcion.maxLength">Maximo 20 caracteres</p>                    
+                </div>            
             </div>
         </div>
-        <button @click="saveTask" class="btn btn-success btn-block mt-2">Agregar tarea</button>
+                    
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal" 
+                @click="limpiarErrores()"
+                v-bind:disabled="agregandoTarea">Cerrar
+            </button>
+
+            <button type="button" class="btn btn-success"                         
+                @click="guardarTarea()"
+                v-bind:disabled="agregandoTarea || $v.$invalid">            
+
+                <div v-if="agregandoTarea">
+
+                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                        Por favor espere...
+                </div>
+
+                <div v-else>
+                    Agregar tarea
+                </div>
+
+            </button>          
+        </div>        
     </div>
 </template>
 
 <script>
-    import { required,maxLength } from 'vuelidate/lib/validators'
+    import { required,maxLength,minLength } from 'vuelidate/lib/validators'
 
-    export default {                
+    export default {                     
         data(){
             return {
                 titulo: "",
                 descripcion: "",
-                errors: [],
-                respuesta: ""
+                errors:null,                
+                agregandoTarea: false,                
+                agregadoExitosamente: false
             }
         },  
         
         validations: {
             titulo:{   
                 required,             
-                maxLength: maxLength(20)
+                maxLength: maxLength(20),
+                minLength: minLength(3)
             },
             descripcion: {
                 required,
-                maxLength: maxLength(20)
+                maxLength: maxLength(20),
+                minLength: minLength(3)
             }
         },
-        mounted: function() {
-            console.log('Component mounted.')
-        },
         methods:{
-
-            saveTask(){                              
+            limpiarErrores(){     
+                
+                this.$v.$reset();                
+                this.titulo = "";
+                this.descripcion = "";
+                this.errors = null;               
+                this.agregandoTarea = false;               
+                this.agregadoExitosamente= false;
+            },
+            guardarTarea(){                              
 
                 /*
                 if (!this.titulo && !this.descripcion) {
@@ -73,34 +114,40 @@
                 } 
                 */              
 
-                if (this.titulo  && this.descripcion) {    
+                let self = this;                                                                
+                if (!self.$v.$invalid) {    
                     
-                    this.error = {};
+                    self.errors = null;
+                    
+                    self.agregandoTarea = true;
 
                     let params = {
 
-                        "titulo":this.titulo,
-                        "descripcion":this.descripcion
+                        "titulo":self.titulo,
+                        "descripcion":self.descripcion
                         
                     };
 
                     axios.post('/task',params)
-
                     .then(  (response) => { 
 
-                        this.$emit('refreshArray');
+                        self.$emit('refreshArray');
 
-                        this.titulo = "";
-                        this.descripcion="";
-
-                        this.errors = [];
-
-                    } )
-                    .catch( (error) => { 
-
-                        this.errors = error.response.data.errors;                         
+                        self.titulo = "";
+                        self.descripcion="";
+                        self.errors = null;
+                        self.agregadoExitosamente = true;
+                        self.$v.$reset();
 
                     })
+                    .catch( (error) => { 
+
+                        self.errors = error.response.data.errors;                         
+
+                    })
+                    .then( () => {
+                        self.agregandoTarea = false;
+                    });
                 }                
             }            
         }                                     

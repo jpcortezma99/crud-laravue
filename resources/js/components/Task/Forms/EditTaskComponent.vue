@@ -1,36 +1,38 @@
 <template>
     <div>                
         
-            <div>
+            <div>                
                 <label>Titulo</label>            
-                <input type="text" class="form-control" v-model="tarea_editar.titulo">                
-                <div v-if="errors.titulo">
-                    <span class="text-danger" v-for="(errors,index) in errors.titulo" :key="index">
-                        {{ errors }}
-                    </span>                
+                <input type="text" class="form-control" v-model="tarea_editar.titulo" v-bind:class="{
+                    'is-valid': !$v.titulo.$invalid,
+                    'is-invalid': $v.titulo.$invalid
+                }">                              
+
+                <div class="valid-feedback">
+                    el titulo es correcto
                 </div>                
-                <div v-else> 
-                                       
-                    <p class="text-danger" v-if="!$v.titulo.required">El titulo es requerido</p>
-                    <p class="text-danger" v-if="!$v.titulo.maxLength">Maximo 20 caracteres</p>                                        
+                <div class="invalid-feedback">                                     
+                    <small class="text-danger" v-if="!$v.titulo.required">El titulo es requerido</small>
+                    <small class="text-danger" v-if="!$v.titulo.minLength">El titulo debe contener minimo 3 caracteres</small>
+                    <small class="text-danger" v-if="!$v.titulo.maxLength">Maximo 20 caracteres</small>                                        
                 </div>
                
             </div>
 
             <div>
                 <label>Descripcion</label>            
-                <input type="text" class="form-control" v-model="tarea_editar.descripcion">                
-                <div v-if="errors.descripcion">
-                    <span class="text-danger" v-for="(errors,index) in errors.descripcion" :key="index">
-                        {{ errors }}
-                    </span>
-                </div>
-                <div v-else>
+                <input type="text" class="form-control" v-model="tarea_editar.descripcion" :class="{
+                    'is-valid': !$v.descripcion.$invalid,
+                    'is-invalid': $v.descripcion.$invalid
+                }">     
+                <div class="valid-feedback">
+                    La descripcion es correcta!
+                </div>           
+                <div class="invalid-feedback">
                     <p class="text-danger" v-if="!$v.descripcion.required">La descripcion es requerida</p>
-                    <p class="text-danger" v-if="!$v.descripcion.maxLength">Maximo 20 caracteres</p>
-                </div>
-                
-                              
+                    <p class="text-danger" v-if="!$v.descripcion.minLength">Minimo 3 caracteres</p>                    
+                    <p class="text-danger" v-if="!$v.descripcion.maxLength">Maximo 20 caracteres</p>                    
+                </div>                                           
             </div>          
         
        
@@ -38,7 +40,7 @@
 </template>
 
 <script>
-    import { required,maxLength } from 'vuelidate/lib/validators'
+    import { required, minLength, maxLength } from 'vuelidate/lib/validators'
 
     export default {   
         props: ["tarea_editar"],  
@@ -63,12 +65,27 @@
         validations: {
             titulo:{   
                 required,             
+                minLength: minLength(3),
                 maxLength: maxLength(20)
             },
             descripcion: {
                 required,
+                minLength: minLength(3),
                 maxLength: maxLength(20)
             }
-        }                                 
+        },
+        
+        methods: {
+            /*
+            setTitulo(value) {
+                this.titulo = value;
+                this.$v.touch();
+            },
+            setDescripcion(value){
+                this.titulo = value;
+                this.$v.touch();
+            }
+            */
+        }
     }
 </script>

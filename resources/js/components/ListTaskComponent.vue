@@ -2,16 +2,17 @@
     <div class="container text-center mt-5">
         <div class="row">
             <div class="col-12 col-md-4 mt-5 pt-5">
-                <div class="sticky-top">
-                    <task-form-component @refreshArray="refreshArray"></task-form-component>
+                <div class="sticky-top pt-5">                                         
+                    <!-- esto activa modal-agregar-component-->
+                    <button class="btn btn-outline-success btn-block" data-toggle="modal" data-target="#addModal">
+                        <img src="https://www.flaticon.es/svg/static/icons/svg/2312/2312159.svg" width="15" height="15" alt="">
+                        Agregar tarea</button>
+                    
                 </div>                
             </div>
             <div class="col-12 col-md-8 mt-lg-5">
                 
-                <h4>Tareas - CRUD</h4>                
-                <!--
-                    <task-component v-bind:tareas="tareas" @refreshArray="refreshArray"></task-component>
-                -->                       
+                <h4>Tareas - CRUD</h4>                                     
 
                 <table class="table table-striped table-bordered table-sm">
                     <thead>
@@ -36,6 +37,10 @@
                 </table>
             </div>
         </div>
+
+        <modal-agregar-component @refreshArray="refreshArray">            
+        </modal-agregar-component>
+
 
         <modal-editar-component
             v-bind:tarea_editar="modal_tarea"
@@ -109,9 +114,6 @@
             </div>
         </div> 
         IN MODAL ELIMINAR-->
-
-
-
 
     </div>
 </template>
