@@ -21,15 +21,8 @@ window.Vue = require('vue');
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
-Vue.component('example-component', require('./components/ExampleComponent.vue').default);
-Vue.component('list-task-component', require('./components/ListTaskComponent.vue').default);
-//Vue.component('task-component', require('./components/TaskComponent.vue').default);
-Vue.component('task-form-component', require('./components/TaskFormComponent.vue').default);
-
-Vue.component('modal-editar-component', require('./components/Modal/ModalEditarComponent.vue').default);
-Vue.component('modal-eliminar-component', require('./components/Modal/ModalEliminarComponent.vue').default);
-Vue.component('modal-agregar-component',require('./components/Modal/ModalAgregarComponent.vue').default);
-
+Vue.component('list-task-component', require('./components/Task/ListTaskComponent.vue').default);
+Vue.component('task-component',require('./components/Task/TaskComponent.vue').default);
 
 Vue.component('add-task-form-component',require('./components/Task/Forms/AddTaskComponent').default);
 Vue.component('edit-task-form-component',require('./components/Task/Forms/EditTaskComponent').default);
@@ -38,7 +31,6 @@ Vue.component('delete-task-form-component',require('./components/Task/Forms/DelT
 
 
 
-Vue.component('task-component',require('./components/Task/TaskComponent.vue').default);
 
 
 import Vuelidate from 'vuelidate';

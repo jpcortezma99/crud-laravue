@@ -1,5 +1,12 @@
 <template>
     <div>                
+        
+        <div class="modal-header">
+                <h4 class="modal-title text-center" id="exampleModalLongTitle">
+                <b>Agregando una tarea</b>
+            </h4>
+        </div>                   
+
         <div class="modal-body">
 
             <div v-if="agregadoExitosamente" class="alert alert-success">

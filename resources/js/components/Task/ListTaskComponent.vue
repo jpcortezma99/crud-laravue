@@ -6,7 +6,8 @@
                     <!-- esto activa modal-agregar-component-->
                     <button class="btn btn-outline-success btn-block" data-toggle="modal" data-target="#addModal">
                         <img src="https://www.flaticon.es/svg/static/icons/svg/2312/2312159.svg" width="15" height="15" alt="">
-                        Agregar tarea</button>
+                        Agregar tarea
+                    </button>
                     
                 </div>                
             </div>
@@ -36,84 +37,48 @@
                     </tbody>
                 </table>
             </div>
-        </div>
+        </div>    
+        
+        <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
 
-        <modal-agregar-component @refreshArray="refreshArray">            
-        </modal-agregar-component>
+                    <add-task-form-component
+                        v-bind:tarea_editar="modal_tarea"
+                        @refreshArray="refreshArray">
+                    </add-task-form-component>       
 
-
-        <modal-editar-component
-            v-bind:tarea_editar="modal_tarea"
-            @refreshArray="refreshArray"
-        >
-        </modal-editar-component>            
-
-        <modal-eliminar-component
-            v-bind:modal_tarea="modal_tarea"  
-            @refreshArray="refreshArray"
-        ></modal-eliminar-component>
-
-        <!-- MODAL EDITAR 
+                </div>             
+            </div>
+        </div>          
+        
         <div class="modal fade" id="ediModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLongTitle">Editando...</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
 
-                        <edit-task-form-component
-                            v-bind:tarea_editar="modal_tarea"
-                            v-bind:errors="errors"
-                        ></edit-task-form-component>                                         
-                       
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary" @click="editarTarea()">
-                            Guardar cambios
-                        </button>
-                    </div>       
+                    <edit-task-form-component
+                        v-bind:tarea_editar="modal_tarea"
+                        @refreshArray="refreshArray">
+                    </edit-task-form-component>       
+
                 </div>             
             </div>
-        </div> 
-         FIN MODAL EDITAR -->   
-        
-        
-
-        <!-- MODAL Eliminar
+        </div>            
+                    
         <div class="modal fade" id="delModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
 
-
-                <div class="modal-content">
-
-                    <div class="modal-header">
-                        <h3>¿Esta seguro de eliminar <b>{{ modal_tarea.titulo.toUpperCase() }}</b> ?</h3> 
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>       
+                <div class="modal-content"> 
 
                     <delete-task-form-component
-                        v-bind:tarea_editar="modal_tarea"
-                    ></delete-task-form-component>
-
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary" @click="delTask()">
-                            Si,absolutamente!
-                        </button>
-                    </div>  
+                        :tarea_editar="modal_tarea"
+                        @refreshArray="refreshArray">
+                    </delete-task-form-component>
 
                 </div>   
 
             </div>
-        </div> 
-        IN MODAL ELIMINAR-->
+        </div>             
 
     </div>
 </template>
