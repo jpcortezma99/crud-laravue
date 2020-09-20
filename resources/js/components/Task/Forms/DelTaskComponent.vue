@@ -1,13 +1,18 @@
 <template>
     <div>       
-
+        
         <div class="modal-header">
-            <h3>¿Esta seguro de eliminar <b>{{ tarea_editar.titulo.toUpperCase() }}</b> ?</h3> 
+            <h3>¿Esta seguro de eliminar?</h3> 
         </div>                  
 
-        <div class="modal-body">            
+        <div class="modal-body">         
+            <b>{{ tarea_editar.titulo.toUpperCase() }}</b>
+            <hr>   
             <div>                            
-                <label for="descripcion"> {{ tarea_editar.descripcion }}</label>                                                                            
+                <label for="descripcion">Descripcion:</label>                                                                            
+                <p>
+                    <small>{{ tarea_editar.descripcion }}</small>
+                </p>
             </div>          
         </div>
 

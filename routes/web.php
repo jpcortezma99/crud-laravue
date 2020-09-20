@@ -14,9 +14,21 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('Welcome/laravue-welcome');
 });
 
-Route::resource('task','TaskController');
+Route::resource('task', 'TaskController');
+
+Route::get('/tasks-vue', function() {
+    
+    return view('Task/index');
+
+})
+->name('task-vue.index')
+->middleware('auth');
 
 
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');

@@ -8,8 +8,6 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 
-
-
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -21,20 +19,22 @@ window.Vue = require('vue');
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
-Vue.component('list-task-component', require('./components/Task/ListTaskComponent.vue').default);
+Vue.component('example-component', require('./components/ExampleComponent.vue').default);
+
+Vue.component('list-task-component',require('./components/Task/ListTaskComponent.vue').default);
+Vue.component('add-task-form-component',require('./components/Task/Forms/AddTaskComponent.vue').default);
+Vue.component('edit-task-form-component',require('./components/Task/Forms/EditTaskComponent.vue').default);
+Vue.component('delete-task-form-component',require('./components/Task/Forms/DelTaskComponent.vue').default);
+
 Vue.component('task-component',require('./components/Task/TaskComponent.vue').default);
-
-Vue.component('add-task-form-component',require('./components/Task/Forms/AddTaskComponent').default);
-Vue.component('edit-task-form-component',require('./components/Task/Forms/EditTaskComponent').default);
-Vue.component('delete-task-form-component',require('./components/Task/Forms/DelTaskComponent').default);
-
-
-
-
 
 
 import Vuelidate from 'vuelidate';
+import JwPagination from 'jw-vue-pagination';
+
 Vue.use(Vuelidate);
+Vue.component('jw-pagination',JwPagination);
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

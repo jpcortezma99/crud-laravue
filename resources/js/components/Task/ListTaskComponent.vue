@@ -1,19 +1,15 @@
 <template>
-    <div class="container text-center mt-5">
+    <div class="mt-5">
+
         <div class="row">
-            <div class="col-12 col-md-4 mt-5 pt-5">
-                <div class="sticky-top pt-5">                                         
-                    <!-- esto activa modal-agregar-component-->
-                    <button class="btn btn-outline-success btn-block" data-toggle="modal" data-target="#addModal">
-                        <img src="https://www.flaticon.es/svg/static/icons/svg/2312/2312159.svg" width="15" height="15" alt="">
-                        Agregar tarea
-                    </button>
-                    
-                </div>                
-            </div>
-            <div class="col-12 col-md-8 mt-lg-5">
-                
-                <h4>Tareas - CRUD</h4>                                     
+            <div class="container">               
+
+                <h4 class="text-center">Tareas - CRUD</h4>
+
+                <button class="btn btn-outline-success mb-3 " data-toggle="modal" data-target="#addModal">
+                    <img src="https://www.flaticon.es/svg/static/icons/svg/2312/2312159.svg" width="15" height="15" alt="">
+                        Agregar una tarea
+                </button>                                                                                                              
 
                 <table class="table table-striped table-bordered table-sm">
                     <thead>
@@ -28,17 +24,23 @@
 
                     <tbody>
                         <task-component 
-                            v-for="tarea in tareas"
+                            v-for="tarea in pageOfItems"
                             v-bind:tarea="tarea"
                             v-bind:key="tarea.id"
                             @editModalFromTaskComponent="setModal"
                             @delModalFromTaskComponent="setModal"
-                        ></task-component>                         
+                        ></task-component>      
+                                           
                     </tbody>
-                </table>
+                </table>                                             
+
+                <div class="text-center">
+                    <jw-pagination :items="tareas" @changePage="onChangePage"></jw-pagination>
+                </div>
             </div>
         </div>    
         
+        <!-- Agregar tarea -->
         <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
@@ -50,8 +52,10 @@
 
                 </div>             
             </div>
-        </div>          
+        </div>   
+        <!-- Fin agregar modal-->       
         
+        <!-- Editar Modal -->
         <div class="modal fade" id="ediModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
@@ -64,7 +68,10 @@
                 </div>             
             </div>
         </div>            
-                    
+        <!-- Fin modal editar -->
+
+
+        <!-- Eliminar Modal -->                    
         <div class="modal fade" id="delModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
 
@@ -79,7 +86,7 @@
 
             </div>
         </div>             
-
+        <!-- Fin eliminar modal -->
     </div>
 </template>
 
@@ -97,7 +104,8 @@
                     id: 0,
                     titulo:'',
                     descripcion:''
-                }                         
+                },
+                pageOfItems: []
             }
         },
         methods:{
@@ -121,6 +129,10 @@
                 //event representa el row seleccionado
                 this.modal_tarea = $event;
             },
+
+            onChangePage(pageOfItems){
+                this.pageOfItems = pageOfItems;
+            }
          
         }
 

@@ -1,3 +1,4 @@
+<!--
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
@@ -7,7 +8,8 @@
         <title>Laravel</title>
 
         <!-- Fonts -->
-        <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
+        
+        <link href="https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap" rel="stylesheet">
 
         <!-- Styles -->
         <link rel="stylesheet" href="{{ mix('css/app.css') }}" />
@@ -15,9 +17,11 @@
         
     </head>
     <body>
-        <div id="app">                                                                                            
-            <list-task-component></list-task-component>                            
+
+        <div id="app" class="">                                                                                                                    
+            @yield('content')
         </div>
 
     </body>    
 </html>
+-->
