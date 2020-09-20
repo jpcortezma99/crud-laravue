@@ -2434,6 +2434,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+var customLabels = {
+  first: 'Inicio',
+  last: 'Fin',
+  previous: 'Anterior',
+  next: 'Siguiente'
+};
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {
     this.refreshArray();
@@ -2446,7 +2456,8 @@ __webpack_require__.r(__webpack_exports__);
         titulo: '',
         descripcion: ''
       },
-      pageOfItems: []
+      pageOfItems: [],
+      customLabels: customLabels
     };
   },
   methods: {
@@ -38767,7 +38778,11 @@ var render = function() {
           { staticClass: "text-center" },
           [
             _c("jw-pagination", {
-              attrs: { items: _vm.tareas },
+              attrs: {
+                items: _vm.tareas,
+                styles: _vm.customStyles,
+                labels: _vm.customLabels
+              },
               on: { changePage: _vm.onChangePage }
             })
           ],
@@ -38784,6 +38799,7 @@ var render = function() {
           id: "addModal",
           tabindex: "-1",
           role: "dialog",
+          "data-backdrop": "static",
           "aria-labelledby": "exampleModalCenterTitle",
           "aria-hidden": "true"
         }
@@ -38820,6 +38836,7 @@ var render = function() {
           id: "ediModal",
           tabindex: "-1",
           role: "dialog",
+          "data-backdrop": "static",
           "aria-labelledby": "exampleModalCenterTitle",
           "aria-hidden": "true"
         }
@@ -38856,6 +38873,7 @@ var render = function() {
           id: "delModal",
           tabindex: "-1",
           role: "dialog",
+          "data-backdrop": "static",
           "aria-labelledby": "exampleModalCenterTitle",
           "aria-hidden": "true"
         }

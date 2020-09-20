@@ -35,13 +35,17 @@
                 </table>                                             
 
                 <div class="text-center">
-                    <jw-pagination :items="tareas" @changePage="onChangePage"></jw-pagination>
+                    <jw-pagination 
+                        :items="tareas" 
+                        @changePage="onChangePage"
+                        :styles="customStyles" 
+                        :labels="customLabels"></jw-pagination>
                 </div>
             </div>
         </div>    
         
         <!-- Agregar tarea -->
-        <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal fade" id="addModal" tabindex="-1" role="dialog" data-backdrop="static" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
 
@@ -56,7 +60,7 @@
         <!-- Fin agregar modal-->       
         
         <!-- Editar Modal -->
-        <div class="modal fade" id="ediModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal fade" id="ediModal" tabindex="-1" role="dialog" data-backdrop="static" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
 
@@ -72,7 +76,7 @@
 
 
         <!-- Eliminar Modal -->                    
-        <div class="modal fade" id="delModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal fade" id="delModal" tabindex="-1" role="dialog" data-backdrop="static" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
 
                 <div class="modal-content"> 
@@ -91,6 +95,16 @@
 </template>
 
 <script>
+
+
+
+    const customLabels = {
+        first: 'Inicio',
+        last: 'Fin',
+        previous: 'Anterior',
+        next: 'Siguiente'
+    };
+
     export default {
         mounted() {
 
@@ -105,7 +119,8 @@
                     titulo:'',
                     descripcion:''
                 },
-                pageOfItems: []
+                pageOfItems: [],        
+                customLabels
             }
         },
         methods:{
